@@ -26,10 +26,7 @@ class ChatScreen extends StatelessWidget {
         onPressed: () {
           FirebaseFirestore.instance
               .collection('chat')
-              .snapshots()
-              .listen((event) {
-            print(event.docs[0]['teste']);
-          });
+              .add({"text": "Adicionad manualmente"});
         },
       ),
     );
