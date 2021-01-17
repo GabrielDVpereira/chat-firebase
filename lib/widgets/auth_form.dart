@@ -2,6 +2,9 @@ import 'package:chatAppFirebase/models/auth_data.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
+  final void Function(AuthData authData) onSubmit;
+
+  AuthForm(this.onSubmit);
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -16,9 +19,7 @@ class _AuthFormState extends State<AuthForm> {
 
     if (!isValid) return;
 
-    print(_authData.email);
-    print(_authData.name);
-    print(_authData.password);
+    widget.onSubmit(_authData);
   }
 
   @override
