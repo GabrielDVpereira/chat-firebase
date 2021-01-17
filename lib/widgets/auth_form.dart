@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(AuthData authData) onSubmit;
+  final bool isLoading;
 
-  AuthForm(this.onSubmit);
+  AuthForm(this.onSubmit, this.isLoading);
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -13,7 +14,7 @@ class _AuthFormState extends State<AuthForm> {
   final AuthData _authData = AuthData();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  _submit() {
+  Future<void> _submit() async {
     bool isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
 
@@ -74,20 +75,30 @@ class _AuthFormState extends State<AuthForm> {
                     height: 12,
                   ),
                   RaisedButton(
-                    child: Text(_authData.isSignIn ? "Entrar" : "Cadastrar"),
-                    onPressed: _submit,
+                    child: widget.isLoading
+                        ? SizedBox(
+                            height: 20.0,
+                            width: 20.0,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                              strokeWidth: 3.0,
+                            ),
+                          )
+                        : Text(_authData.isSignIn ? "Entrar" : "Cadastrar"),
+                    onPressed: widget.isLoading ? null : _submit,
                   ),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(_authData.isSignIn
-                        ? 'Criar uma nova conta?'
-                        : "Já possui uma conta?"),
-                    onPressed: () {
-                      setState(() {
-                        _authData.toggleMode();
-                      });
-                    },
-                  )
+                  if (!widget.isLoading)
+                    FlatButton(
+                      textColor: Theme.of(context).primaryColor,
+                      child: Text(_authData.isSignIn
+                          ? 'Criar uma nova conta?'
+                          : "Já possui uma conta?"),
+                      onPressed: () {
+                        setState(() {
+                          _authData.toggleMode();
+                        });
+                      },
+                    )
                 ],
               ),
             ),
