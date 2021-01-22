@@ -24,11 +24,15 @@ class Messages extends StatelessWidget {
           return ListView.builder(
             reverse: true,
             itemCount: chatDocs.length,
-            itemBuilder: (ctx, i) => MessageBubble(chatDocs[i]['text'],
-                chatDocs[i]['username'], chatDocs[i]['userId'] == user.uid,
-                key: ValueKey(
-                  chatDocs[i].id,
-                )),
+            itemBuilder: (ctx, i) => MessageBubble(
+              chatDocs[i]['text'],
+              chatDocs[i]['username'],
+              chatDocs[i]['userImage'],
+              chatDocs[i]['userId'] == user.uid,
+              key: ValueKey(
+                chatDocs[i].id,
+              ),
+            ),
           );
         });
   }

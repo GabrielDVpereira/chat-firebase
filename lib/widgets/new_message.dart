@@ -23,7 +23,7 @@ class _NewMessageState extends State<NewMessage> {
       'createdAt': Timestamp.now(),
       'userId': user.uid,
       'username': userFirestore["name"],
-      'userImage': userFirestore['ImageUrl']
+      'userImage': userFirestore['imageUrl']
     });
 
     _controller.clear();
