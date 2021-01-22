@@ -40,10 +40,12 @@ class _AuthScreenState extends State<AuthScreen> {
             .child(authResult.user.uid + '.jpg');
 
         await ref.putFile(authData.image);
+        final url = await ref.getDownloadURL();
 
         final userData = {
           'name': authData.name,
           'email': authData.email,
+          'imageUrl': url
         };
 
         await FirebaseFirestore.instance
@@ -60,7 +62,6 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
-    } finally {
       setState(() {
         isLoading = false;
       });
