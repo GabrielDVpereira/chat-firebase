@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:chatAppFirebase/models/auth_data.dart';
+import 'package:chatAppFirebase/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -20,7 +23,21 @@ class _AuthFormState extends State<AuthForm> {
 
     if (!isValid) return;
 
+    if (_authData.image == null && _authData.isSignUp) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Insira uma foto"),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+      return;
+    }
+
     widget.onSubmit(_authData);
+  }
+
+  void _handlePickedImage(File image) {
+    _authData.image = image;
   }
 
   @override
@@ -35,6 +52,7 @@ class _AuthFormState extends State<AuthForm> {
               key: _formKey,
               child: Column(
                 children: [
+                  if (_authData.isSignUp) UserImagePicker(_handlePickedImage),
                   if (_authData.isSignUp)
                     TextFormField(
                       key: ValueKey('name'),
