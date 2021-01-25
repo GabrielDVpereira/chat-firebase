@@ -1,10 +1,47 @@
 import 'package:chatAppFirebase/widgets/messages.dart';
 import 'package:chatAppFirebase/widgets/new_message.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final fbm = FirebaseMessaging.instance;
+    fbm.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    setUpFbmListerners();
+  }
+
+  void setUpFbmListerners() {
+    FirebaseMessaging.onMessage.listen((event) {
+      print(event.data);
+    });
+
+    FirebaseMessaging.onBackgroundMessage((message) {
+      print('background message!!');
+      print(message);
+      return;
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print(event.data);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
